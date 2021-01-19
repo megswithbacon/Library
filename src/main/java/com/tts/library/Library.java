@@ -1,7 +1,82 @@
 package com.tts.library;
 
+import java.util.ArrayList;
+
 public class Library {
     // Add the missing implementation to this class
+    private final String address;
+    private final ArrayList<Book> bookList;
+    private static String openingHours;
+    private final String DEFAULT_HOURS = "Libraries are open daily from 9am to 5pm";
+
+    public Library(String address) {
+        this.address = address;
+        bookList = new ArrayList<>();
+        openingHours = DEFAULT_HOURS;
+    }
+
+    private String getAddress(){
+        return this.address;
+    }
+
+    private void addBook(Book book) {
+        bookList.add(book);
+    }
+
+    private static void printOpeningHours() {
+        System.out.println(openingHours);
+    }
+
+    private void printAddress() {
+        System.out.println(getAddress());
+    }
+
+    private void borrowBook(String book) {
+        boolean available = false;
+        for( Book b : bookList){
+            if(b.getTitle().equals(book)){
+                available = true;
+                if(b.isBorrowed()){
+                    System.out.println("Sorry, this book is already borrowed.");
+                } else {
+                    b.borrowed();
+                    System.out.printf("You successfully borrowed '%s'%n", b.getTitle());
+                }
+            }
+        }
+        if(!available){
+            System.out.println("Sorry, this book is not in our catalog.");
+        }
+
+    }
+
+    private void printAvailableBooks() {
+        if (!bookList.isEmpty()) {
+            for (Book b : bookList) {
+                if (!b.isBorrowed()) {
+                    System.out.println(b.getTitle());
+                }
+            }
+        } else {
+            System.out.println("No books are in this catalog");
+        }
+
+    }
+
+    private void returnBook(String book) {
+        boolean available = false;
+        for(Book b: bookList){
+            if(b.getTitle().equals(book)){
+                available = true;
+                b.returned();
+                System.out.printf("You successfully returned %s %n", book);
+            }
+        }
+        if(!available) {
+            System.out.println("We do not have this book in our catalog to be returned");
+        }
+    }
+
 
     public static void main(String[] args) {
         // Create two libraries
@@ -48,4 +123,8 @@ public class Library {
         System.out.println("Books available in the first library:");
         firstLibrary.printAvailableBooks();
     }
+
+
+
+
 }
